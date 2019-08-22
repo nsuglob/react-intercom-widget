@@ -1,6 +1,6 @@
 {
   "name": "react-intercom-widget",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A component to initialize Intercom widget in your application",
   "main": "src/index.js",
   "scripts": {
