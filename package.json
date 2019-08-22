@@ -1,0 +1,39 @@
+{
+  "name": "react-intercom-widget",
+  "version": "1.0.0",
+  "description": "A component to initialize Intercom widget in your application",
+  "main": "src/index.js",
+  "scripts": {
+    "format": "prettier src/**/*.{jsx,tsx,js,ts}",
+    "lint": "eslint .",
+    "lint:fix": "prettier --write './src/*.js' && eslint --quiet . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suhlob/react-intercom-widget.git"
+  },
+  "keywords": [
+    "intercom",
+    "widget",
+    "react"
+  ],
+  "author": "Mikalai Suhlob",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/suhlob/react-intercom-widget/issues"
+  },
+  "homepage": "https://github.com/suhlob/react-intercom-widget#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^6.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "prettier": "1.18.2"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2"
+  }
+}
