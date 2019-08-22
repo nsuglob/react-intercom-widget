@@ -49,7 +49,7 @@ export default class Intercom extends Component {
     const { appID, ...rest } = nextProps;
 
     if (!canUseDOM) {
-        return;
+      return;
     }
 
     window.intercomSettings = { app_id: appID, ...rest };
