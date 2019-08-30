@@ -2,12 +2,16 @@
   "name": "react-intercom-widget",
   "version": "1.0.1",
   "description": "A component to initialize Intercom widget in your application",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "esnext": "src/index.js",
   "scripts": {
     "format": "prettier src/**/*.{jsx,tsx,js,ts}",
-    "lint": "eslint .",
-    "lint:fix": "prettier --write './src/*.js' && eslint --quiet . --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./src",
+    "lint:fix": "prettier --write './src/*.js' && eslint --quiet ./src --fix",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel --config-file ./.cjs.babelrc -d dist/ src/index.js && babel --config-file ./.module.babelrc src/index.js -o dist/index.esm.js ",
+    "prepublishOnly": "npm build"
   },
   "repository": {
     "type": "git",
@@ -25,10 +29,16 @@
   },
   "homepage": "https://github.com/suhlob/react-intercom-widget#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.5.5",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "core-js": "^3.2.1",
     "eslint": "^6.1.0",
     "eslint-plugin-react": "^7.14.3",
     "prettier": "1.18.2"

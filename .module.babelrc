@@ -1,0 +1,31 @@
+{
+  "plugins": ["@babel/plugin-transform-runtime"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "targets": "edge >= 18, chrome >= 66, firefox >= 60, safari >= 11",
+        "exclude": [
+          "es.regexp.constructor",
+          "es.regexp.flags",
+          "es.array.sort",
+          "es.string.includes",
+          "es.number.to-fixed",
+          "es.promise",
+          "es.string.match",
+          "es.regexp.to-string",
+          "es.string.replace",
+          "web.dom-collections.iterator",
+          "es.string.split",
+          "es.string.starts-with",
+          "web.url",
+          "es.string.search"
+        ],
+        "corejs": 3,
+        "useBuiltIns": "usage"
+      }
+    ],
+    "@babel/preset-react"
+  ]
+}
