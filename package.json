@@ -1,7 +1,7 @@
 {
-  "name": "react-intercom",
+  "name": "react-intercom-widget",
   "version": "1.2.0",
-  "description": "A component to initialize Intercom in your application",
+  "description": "A react component to initialize Intercom in your application",
   "main": "dist/index.js",
   "dependencies": {
     "prop-types": "15.5.8",
