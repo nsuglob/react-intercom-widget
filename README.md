@@ -39,3 +39,5 @@ IntercomAPI('trackEvent', 'invited-friend');
 ```
 
 This is, of course, equivalent to just calling `window.Intercom('trackEvent', 'invited-friend');` or even `Intercom('trackEvent', 'invited-friend');`.
+
+This is a fork of [react-intercom](https://github.com/nhagen/react-intercom)

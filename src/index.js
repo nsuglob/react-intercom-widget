@@ -1,95 +1,83 @@
-import { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const canUseDOM = window && window.document && window.document.createElement ? true : false;
+const canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
 export const IntercomAPI = (...args) => {
   if (canUseDOM && window.Intercom) {
     window.Intercom.apply(null, args);
   } else {
-    console.error('Intercom is not initialized yet');
+    console.warn('Intercom not initialized yet');
   }
 };
 
-export default class Intercom extends Component {
-  constructor(props) {
-    super(props);
+const Intercom = React.memo(props => {
+  const { appID, ...otherProps } = props;
 
-    const { appID, ...rest } = props;
+  if (!canUseDOM) return null;
 
-    if (!appID || !canUseDOM) {
-      return;
-    }
+  useEffect(() => {
+    const initializeIntercom = () => {
+      if (!appID || !canUseDOM) {
+        return;
+      }
 
-    if (!window.Intercom) {
-      (function(widget, documentBody, id, script) {
-        function i() {
-          i.c(arguments);
-        }
-        i.q = [];
-        i.c = function(args) {
-          i.q.push(args);
-        };
-        widget.Intercom = i;
-        script = documentBody.createElement('script');
-        script.async = 1;
-        script.src = 'https://widget.intercom.io/widget/' + id;
-        documentBody.head.appendChild(script);
-      })(window, document, appID);
-    }
+      if (!window.Intercom) {
+        (function(w, d, id, s) {
+          function i() {
+            i.c(arguments);
+          }
+          i.q = [];
+          i.c = function(args) {
+            i.q.push(args);
+          };
+          w.Intercom = i;
+          s = d.createElement('script');
+          s.async = 1;
+          s.src = 'https://widget.intercom.io/widget/' + id;
+          d.head.appendChild(s);
+        })(window, document, appID);
+      }
 
-    window.intercomSettings = { app_id: appID, ...rest };
+      window.intercomSettings = { ...otherProps, app_id: appID };
 
-    if (window.Intercom) {
-      window.Intercom('boot', rest);
-    }
-  }
+      if (window.Intercom) {
+        window.Intercom('boot', otherProps);
+      }
+    };
+    // initialized on mount, as shown by empty array in second param
+    initializeIntercom();
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { appID, ...rest } = nextProps;
+    // execute on what used to be componentWillUnmount()
+    return () => {
+      if (!canUseDOM || !window.Intercom) return false;
 
-    if (!canUseDOM) {
-      return;
-    }
+      window.Intercom('shutdown');
 
-    window.intercomSettings = { app_id: appID, ...rest };
+      delete window.Intercom;
+      delete window.intercomSettings;
+    };
+  }, []);
 
-    if (window.Intercom) {
-      if (this.loggedIn(this.props) && !this.loggedIn(nextProps)) {
+  useEffect(() => {
+    const clearIntercom = () => {
+      if (window.Intercom) {
         // Shutdown and boot each time the user logs out to clear conversations
         window.Intercom('shutdown');
-        window.Intercom('boot', rest);
+        window.Intercom('boot', otherProps);
       } else {
-        window.Intercom('update', rest);
+        window.Intercom('update', otherProps);
       }
-    }
-  }
+    };
+    // executed when props.email or props.user_id change
+    clearIntercom();
+  }, [props.email, props.user_id]);
 
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  componentWillUnmount() {
-    if (!canUseDOM || !window.Intercom) return false;
-
-    window.Intercom('shutdown');
-
-    delete window.Intercom;
-    delete window.intercomSettings;
-  }
-
-  loggedIn(props) {
-    return props.email || props.user_id;
-  }
-
-  render() {
-    return false;
-  }
-}
+  return false;
+});
 
 Intercom.propTypes = {
   appID: PropTypes.string.isRequired,
-  userID: PropTypes.string,
-  name: PropTypes.string,
-  email: PropTypes.string,
 };
+
+export default Intercom;
